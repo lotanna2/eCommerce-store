@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../utils";
+import { fetchProducts, fetchCategoryProducts } from "../utils";
 import { ALLOWED_CATEGORIES } from "../routes";
+import { useParams } from "react-router-dom";
 import ProductCard from "../components/productCard";
   
 const Products = () => {    //making state variables to hold all of the products 
-
+ 
+    const {category} = useParams();
     const [allProducts, setAllProducts] = useState([]); // a place to store all the filtered data that would not change
     const [products, setProducts] = useState([]);
     const [activeCat, setActiveCat] = useState("All"); 
@@ -21,16 +23,26 @@ const Products = () => {    //making state variables to hold all of the products
         };
 
         useEffect(() => { // fetching & returning the product list using useEffect for all of them to appear without lag
-            const getProducts = async () => { // then getting the product with async
-                const response = await fetchProducts(); // getting the data from 'response.data'
-                setProducts(response);
-                setAllProducts(response);
+          if (!category) { // implementing optional ul parameters for categories
+            const getProducts = async () => { //  getting the product with async
+              const response = await fetchProducts(category); // getting the data from 'response.data'
+              setProducts(response);
+              setAllProducts(response);
             };
             getProducts().catch((e) => console.error("we have an error", e)); //catching error
+          } else { //if category selection
+            const getCategoryProducts = async () => { // then getting the category product with async from the api in utils
+              const response = await fetchCategoryProducts(category); // getting the data from 'response.data'
+              setProducts(response);
+            };
+            getCategoryProducts().catch((e) => console.error("we have an error", e));
+          }
+            
             },[]); 
             
             return (  
             <div className="products-cont"> 
+            {!category  ? // this is also for the styling for the categories on click
                 <div className="category-select"> 
                     <span 
                       className={`select-cat-span ${ // made the className dynamic to know what state its in to change the color when clicked
@@ -65,7 +77,9 @@ const Products = () => {    //making state variables to hold all of the products
                      >
                         Men's
                         </span>
-                </div>
+                </div> : <div className="category-select">
+                  <span>{category}</span> 
+                  </div>}
                 <div className="product-card-cont"> 
                     {products.length > 0 && // mapping through the product card when the length is > 0 and it displays this
                     products.map(

@@ -13,7 +13,7 @@ export const appRoutes = [
     requiresAuth: false,
 },
 {
-    path: "/products",
+    path: "/products/:category?", // adding url Parameters :'then the path' plus '?' --- the ? makes the url parameter (which in this situation is the 'categoreies') optional so the path can work 
     component: Products,
     requiresAuth: false,
 },
