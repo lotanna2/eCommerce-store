@@ -9,8 +9,7 @@ export const ALLOWED_CATEGORIES = { // constant variables for the categories
 const Cart = lazy(() => import("./pages/Cart"));
 const Products = lazy(() => import("./pages/Products")); // defining a variable for it
 const Checkout = lazy(() => import("./pages/Checkout"));
-const Login = lazy(() => import("./pages/login"));
-const NotFound = lazy(() => import("./pages/Notfound"));
+const Login = lazy(() => import("./pages/Login"));
 const About = lazy(() => import("./pages/About"));
 
 export const appRoutes = [

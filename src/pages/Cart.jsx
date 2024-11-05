@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
+const Cart = (_cartItems) => {
     const navigate = useNavigate();
+
      return (
      <div className="cart-cont">
         <div className="cart-wrapper">

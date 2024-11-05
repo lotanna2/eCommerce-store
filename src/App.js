@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import Navbar from './components/navbar'; // importing components 
 import { appRoutes } from './routes'; //
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { Suspense, useRef } from 'react'; // a react component that renders all of our routes and works with lazy loading. 
+import { Suspense } from 'react'; // a react component that renders all of our routes and works with lazy loading. 
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 function App() {
   const cartInitialState = {
@@ -15,7 +15,7 @@ function App() {
   const [cartItems, setCartItems] = useState(cartInitialState);
   const [user, setUser] = useState({}); //user state that would be passed and tracks the users values
   const [isLogged, setIsLogged] = useState(false);
-  const Location =useLocation();
+  const location = useLocation();
 
   return (
       <div>
@@ -32,7 +32,7 @@ function App() {
             unmountOnExit
           > 
           <Suspense fallback={() => <h1> loading</h1>}> 
-        <Routes Location={location} //;location; prop passed that changes the location value for the csstransition
+        <Routes Location={location} //location; prop passed that changes the location value for the csstransition
         >
           {appRoutes.map((route) => { // 'appRoutes' is an import from routes allowing you to map through the diff paths
             if(route.requiresAuth && !isLogged) { //if route requires auth(is a protected route) and is not logged redirect to login page else 

@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { authenticateUser } from "../utils";
 
-const Login = (setUser, setIsLogged) => { 
+const Login = ({setUser, setIsLogged}) => { 
     const [email, setEmail] = useState(""); //login handling the authentication login which tracks an event 
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [loading, setLoading] = useState(false); // for the loading icon on submit
 
     const handleLogin = (e) => {
-        setLoading(true);
+        setLoading(true); // at initial value loading icon
         e.preventDefault();
-        const getUser = async () => {
-            const response = await authenticateUser(email, password);  // passing in the variables to check
-         response ?
-          (setUser(response), setIsLogged(true))
+        const getUser = async () => { // getting user data
+            const response = await authenticateUser(email, password);  // passing in the variables to check for authentication
+              // eslint-disable-next-line no-unused-expressions
+         response
+          ? (setUser(response), setIsLogged(true))
           : setErrorMsg("INVALID EMAIL OR PASSWORD");
              
-          setLoading(false);
+          console.log("RESPONSE", response);
+          setLoading(false); // set loading false
         };
 
         getUser();
@@ -33,6 +35,7 @@ const Login = (setUser, setIsLogged) => {
              name="email" 
              className="login-inp"
              value={email} 
+             placeholder="Email"
              onChange={(e) => { // checking the value onchabge of input
                 setEmail(e.target.value);
              }}
@@ -55,7 +58,7 @@ const Login = (setUser, setIsLogged) => {
               disabled={loading ? true : false} //if loading, disabled will be true else it would be false
               onClick={handleLogin} // handles the login for login from the parameters above
              > 
-                {!loading? Submit : "Loading..."}
+                {!loading? "Submit" : "Loading..."}
              </button>
            </form> 
         </div>  
