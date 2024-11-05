@@ -5,8 +5,15 @@ import { useNavigate, Link } from "react-router-dom"; // adjusted the a tag on t
 import "./styles.css";
 
 
-const Navbar = ({ cartItemsCount, isLogged }) => {
+const Navbar = ({ cartItemsCount, isLogged, categoryRef }) => {
   const navigate = useNavigate(); // for the logo taking you back to the home page
+  const handleNavigateScroll = () => {
+    navigate("/");
+    setTimeout(() => { // giving it a timeout to allow it to navigate then smooth scroll to categories 
+      categoryRef.current.scrollIntoView({ behaviour: "smooth"});
+    }, 500);
+    };
+    
   return ( // onClick useNavigate to the home page
     <nav>
       <div className="nav-cont-1">
@@ -16,16 +23,21 @@ const Navbar = ({ cartItemsCount, isLogged }) => {
         <ul className="nav-ul"> 
           <Link to={"/products"}>Products</Link> 
 
-          <span className="about-span">Shop</span>
-          <a href="##">About</a>
+          <span onClick={handleNavigateScroll} className="about-span">Shop</span>
+          <Link to={"/about"} href="##">About</Link>
         </ul>
       </div>
 
       <div className="nav-cont-2">
-        {!isLogged && <button className="login-nav">Login</button>}
+        {!isLogged && ( //if not logged, do this - sends the login button to the login page
+          <button className="login-nav" onClick={() => navigate("/login")}>
+          Login
+          </button>
+        )}
         <AiOutlineSearch size={25} />
-        <a href="##" className="cart-icon-cont">
-          <span className="nav-cart-count">{cartItemsCount}</span>
+        <Link to={"/cart"} href="##" className="cart-icon-cont"> 
+          <span className="nav-cart-count">{ //carditemsCount added to the nav bar on 'App.js'
+          cartItemsCount}</span>
           <HiShoppingCart
             size={25}
             style={{
@@ -34,7 +46,7 @@ const Navbar = ({ cartItemsCount, isLogged }) => {
               marginBottom: "-5px",
             }}
           />
-        </a>
+        </Link>
       </div>
     </nav>
   );

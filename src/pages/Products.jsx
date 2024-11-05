@@ -4,7 +4,7 @@ import { ALLOWED_CATEGORIES } from "../routes";
 import { useParams } from "react-router-dom";
 import ProductCard from "../components/productCard";
   
-const Products = () => {    //making state variables to hold all of the products 
+const Products = (setCartItems) => {  //making state variables to hold all of the products 
  
     const {category} = useParams();
     const [allProducts, setAllProducts] = useState([]); // a place to store all the filtered data that would not change
@@ -18,7 +18,7 @@ const Products = () => {    //making state variables to hold all of the products
             );
             setProducts(filterProducts); 
           } else { // if no filter is selected return all of our products
-            setProducts(allProducts);
+            setProducts(allProducts); 
           }
         };
 
@@ -27,13 +27,14 @@ const Products = () => {    //making state variables to hold all of the products
             const getProducts = async () => { //  getting the product with async
               const response = await fetchProducts(category); // getting the data from 'response.data'
               setProducts(response);
-              setAllProducts(response);
+              setAllProducts(response); //all the products would be visible initially
             };
             getProducts().catch((e) => console.error("we have an error", e)); //catching error
           } else { //if category selection
             const getCategoryProducts = async () => { // then getting the category product with async from the api in utils
               const response = await fetchCategoryProducts(category); // getting the data from 'response.data'
               setProducts(response);
+                  // removed setAllProducts(response); because we dont need to filter the categories
             };
             getCategoryProducts().catch((e) => console.error("we have an error", e));
           }
@@ -45,7 +46,7 @@ const Products = () => {    //making state variables to hold all of the products
             {!category  ? // this is also for the styling for the categories on click
                 <div className="category-select"> 
                     <span 
-                      className={`select-cat-span ${ // made the className dynamic to know what state its in to change the color when clicked
+                      className={`select-cat-span ${ // the filter method for the products below, made the className dynamic to know what state its in to change the color when clicked
                         activeCat === "All" ? "cat-active" : ""
                         }`}
                         onClick={() => {
@@ -77,9 +78,9 @@ const Products = () => {    //making state variables to hold all of the products
                      >
                         Men's
                         </span>
-                </div> : <div className="category-select">
-                  <span>{category}</span> 
-                  </div>}
+                </div> : <div className="category-select"> 
+                  <span>{category}</span>  
+                  </div>} 
                 <div className="product-card-cont"> 
                     {products.length > 0 && // mapping through the product card when the length is > 0 and it displays this
                     products.map(
@@ -96,6 +97,7 @@ const Products = () => {    //making state variables to hold all of the products
                         productName={product.title}
                         description={product.description}
                         price={product.price}
+                        setCartItems={setCartItems }
                         />
                     
                     )

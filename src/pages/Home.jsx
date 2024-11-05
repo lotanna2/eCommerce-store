@@ -5,13 +5,13 @@ import Hero from "../components/hero";
 import CategoryCard from "../components/categoryCard";
 import "./styles.css"
 
-const Home = () => {
+const Home = ({ CategoryRef}) => {
     return (
-    <div>
+    <div> 
          <Hero />
          <hr />
          <h2> Categories </h2>
-         <div className="cat-cont">
+         <div className="cat-cont" ref={CategoryRef }>
             <CategoryCard imgSrc={MensClothing} title={"Men's"} />
             <CategoryCard imgSrc={WomensClothing} title={"Women's"}/>
 
